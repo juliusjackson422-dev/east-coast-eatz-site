@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- eastcoasteatz.com is registered to the business and currently returns a
+     404 from Wix. This sitemap is correct the moment the site is served
+     from that domain, and wrong anywhere else. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://eastcoasteatz.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

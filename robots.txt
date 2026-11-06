@@ -1,0 +1,18 @@
+User-agent: *
+Disallow: /
+
+# Pre-launch. Served from a demo URL, not from eastcoasteatz.com, and the
+# page still carries unverified items (see the [CONFIRM] markers in
+# index.html). Crawling it here would put a copy of a real business's site
+# at an address the business does not own.
+#
+# When it moves to the real domain and prelaunch-check.sh passes, replace
+# this whole file with:
+#
+#   User-agent: *
+#   Allow: /
+#   Sitemap: https://eastcoasteatz.com/sitemap.xml
+#
+# Note: on a github.io/PROJECT/ URL this file is NOT read by crawlers —
+# they only read github.io/robots.txt. The noindex meta tag in index.html
+# is the control that actually travels with the file.
