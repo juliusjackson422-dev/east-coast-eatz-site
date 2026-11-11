@@ -45,11 +45,14 @@
   Socials          the printed menu board
   Photography      the business's own photographs, from their
                    StreetFoodFinder gallery. No subject on this page was
-                   generated. Three things were AI-processed, all from
-                   those photographs: the two food stills were upscaled,
-                   the logo was upscaled before its background was keyed
-                   out, and the two menu clips are the food stills set in
-                   motion. The footer says so.
+                   generated EXCEPT the dish pictures on the menu: those
+                   twenty are AI-made illustrations, written from the menu
+                   descriptions, and the page says so under the menu
+                   heading, in each alt text and in the footer. Three more
+                   things were AI-processed from the real photographs: the
+                   two food stills were upscaled, the logo was upscaled
+                   before its background was keyed out, and the two menu
+                   clips are the food stills set in motion.
 
   WHAT IS NOT VERIFIED — search this file for [CONFIRM]
   -----------------------------------------------------
@@ -516,6 +519,62 @@ section{position:relative}
 .dish.in .dish__name::after{transform:scaleX(1)}
 .dish__price{font-family:Anton,sans-serif;font-size:clamp(1.25rem,2vw,1.6rem);color:var(--gold);line-height:1;flex-shrink:0}
 .dish p{font-size:.96rem;color:#c3cfe8;margin:0}
+
+/* ---- dish pictures ----
+   The picture runs edge to edge across the top of the card and the text gets
+   its own padded box. It arrives slightly oversized and settles as the card
+   reveals, then leans in a little on hover, under the card's existing tilt. */
+.dish:has(.dish__pic){padding:0}
+.dish__pic{margin:0;overflow:hidden;position:relative;background:var(--navy-800)}
+.dish__pic img{
+  width:100%;aspect-ratio:3/2;object-fit:cover;
+  transform:scale(1.14);transition:transform 1.5s var(--ease-out);will-change:transform;
+}
+.dish.in .dish__pic img{transform:none}
+.dish.in:hover .dish__pic img{transform:scale(1.06);transition-duration:.9s}
+/* a soft fade so the photo sinks into the card instead of ending on a line */
+.dish__pic::after{
+  content:"";position:absolute;inset:auto 0 0;height:38%;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(9,16,31,.82));
+}
+.dish__body{padding:1.15rem 1.5rem 1.45rem}
+.dish__name{margin:0}
+
+/* ---- compact picture cards: extras, fries ---- */
+.bites{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.bite{
+  border-radius:14px;border:1px solid var(--line);overflow:hidden;
+  background:linear-gradient(165deg,rgba(27,45,99,.4),rgba(9,16,31,.72));
+  transition:transform .45s var(--ease-out),border-color .4s,box-shadow .45s;
+}
+.bite:hover{transform:translate3d(0,-6px,0);border-color:var(--line-hi);box-shadow:0 26px 54px -30px rgba(34,114,236,.75)}
+.bite__pic{margin:0;overflow:hidden;background:var(--navy-800)}
+.bite__pic img{
+  width:100%;aspect-ratio:1/1;object-fit:cover;
+  transform:scale(1.16);transition:transform 1.3s var(--ease-out);will-change:transform;
+}
+.bite.in .bite__pic img{transform:none}
+.bite.in:hover .bite__pic img{transform:scale(1.07);transition-duration:.8s}
+.bite__row{display:flex;align-items:baseline;justify-content:space-between;gap:.6rem;padding:.85rem 1rem 0}
+.bite__name{margin:0;font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(.98rem,1.5vw,1.16rem);line-height:1.05;letter-spacing:.02em;min-width:0;overflow-wrap:anywhere}
+.bite__price{font-family:Anton,sans-serif;color:var(--gold);font-size:clamp(.98rem,1.5vw,1.16rem);line-height:1.05;flex-shrink:0;font-variant-numeric:tabular-nums}
+.bite__desc{margin:.45rem 0 0;padding:0 1rem;font-size:.86rem;line-height:1.5;color:var(--muted)}
+.bite > :last-child{padding-bottom:1rem}
+@media (min-width:700px){
+  .bites--6{grid-template-columns:repeat(3,1fr)}
+}
+@media (min-width:900px){
+  .bites--4{grid-template-columns:repeat(4,1fr)}
+}
+@media (min-width:1100px){
+  .bites--6{grid-template-columns:repeat(6,1fr)}
+}
+
+/* ---- munchies rows with a thumbnail ---- */
+.strip .strip__pic{display:flex;align-items:center;gap:1rem;padding:.7rem .9rem .7rem .7rem}
+.strip__pic img{width:76px;height:76px;flex-shrink:0;border-radius:10px;object-fit:cover}
+.strip .strip__txt{padding:0;border:0;border-radius:0;background:none;min-width:0}
+.strip .strip__txt:hover{transform:none}
 .dish__tag{
   display:inline-block;margin-top:.9rem;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;
   font-weight:600;color:var(--navy-900);background:var(--gold);padding:.3em .62em;border-radius:4px
@@ -700,6 +759,7 @@ section{position:relative}
   .wipe::after{transform:scaleX(0)}
   .flames,.steam,.kb video,.hero__media video{display:none}
   .kb img{animation:none;transform:none}
+  .dish__pic img,.bite__pic img{transform:none}
   .dish__name::after{transform:scaleX(1)}
   .ribbon__track{animation:none}
   .cue i{animation:none}
@@ -852,6 +912,11 @@ section{position:relative}
         <span class="mask mask-d1"><span>or without onions.</span></span>
       </h2>
       <p class="lede rv rv-d3" style="margin-top:1.3rem">Everything below is chopped and griddled to order.</p>
+      <!-- [CONFIRM] The dish pictures on this menu are AI-made illustrations, generated
+           from the menu descriptions because the truck has published only two food
+           photographs. They are disclosed here, in every alt text and in the footer.
+           The owner should either approve them or supply real plate photography. -->
+      <p class="feature__note rv rv-d4" style="margin-top:1.1rem;font-size:.86rem">Dish pictures are illustrations made for this menu, not photographs of our food.</p>
     </div>
 
     <div class="cheese rv">
@@ -893,41 +958,97 @@ section{position:relative}
     <h3 class="rv" style="margin-bottom:1.2rem;color:var(--flame-core)">Cheesesteaks</h3>
     <div class="menu-grid" data-tilt>
       <article class="dish rv">
-        <div class="dish__top"><h4 class="dish__name">O.G. Philly</h4><span class="dish__price">$10</span></div>
-        <p>Thinly sliced beef, with or without onions, topped with your choice of cheese.</p>
-        <span class="dish__tag">The one to order first</span>
+        <figure class="dish__pic">
+          <img src="img/m-og-philly.webp" srcset="img/m-og-philly-sm.webp 640w, img/m-og-philly.webp 1024w"
+               sizes="(max-width:819px) 92vw, 540px" width="1024" height="688" loading="lazy" decoding="async"
+               alt="Illustration of a cheesesteak on a hoagie roll: thin-sliced beef, grilled onions and yellow cheese sauce.">
+        </figure>
+        <div class="dish__body">
+          <div class="dish__top"><h4 class="dish__name">O.G. Philly</h4><span class="dish__price">$10</span></div>
+          <p>Thinly sliced beef, with or without onions, topped with your choice of cheese.</p>
+          <span class="dish__tag">The one to order first</span>
+        </div>
       </article>
       <article class="dish rv rv-d1">
-        <div class="dish__top"><h4 class="dish__name">Chicken Philly</h4><span class="dish__price">$10</span></div>
-        <p>Diced grilled chicken, with or without onions, topped with your choice of cheese.</p>
+        <figure class="dish__pic">
+          <img src="img/m-chicken-philly.webp" srcset="img/m-chicken-philly-sm.webp 640w, img/m-chicken-philly.webp 1024w"
+               sizes="(max-width:819px) 92vw, 540px" width="1024" height="688" loading="lazy" decoding="async"
+               alt="Illustration of a chicken cheesesteak on a hoagie roll: diced grilled chicken, onions and provolone.">
+        </figure>
+        <div class="dish__body">
+          <div class="dish__top"><h4 class="dish__name">Chicken Philly</h4><span class="dish__price">$10</span></div>
+          <p>Diced grilled chicken, with or without onions, topped with your choice of cheese.</p>
+        </div>
       </article>
       <article class="dish rv rv-d2">
-        <div class="dish__top"><h4 class="dish__name">Pepper Steak</h4><span class="dish__price">$11</span></div>
-        <p>Thinly sliced beef and hot cherry peppers, with or without onions, your choice of cheese.</p>
+        <figure class="dish__pic">
+          <img src="img/m-pepper-steak.webp" srcset="img/m-pepper-steak-sm.webp 640w, img/m-pepper-steak.webp 1024w"
+               sizes="(max-width:819px) 92vw, 540px" width="1024" height="688" loading="lazy" decoding="async"
+               alt="Illustration of a pepper steak sandwich: thin-sliced beef, onions, red cherry peppers and provolone.">
+        </figure>
+        <div class="dish__body">
+          <div class="dish__top"><h4 class="dish__name">Pepper Steak</h4><span class="dish__price">$11</span></div>
+          <p>Thinly sliced beef and hot cherry peppers, with or without onions, your choice of cheese.</p>
+        </div>
       </article>
       <article class="dish rv rv-d3">
-        <div class="dish__top"><h4 class="dish__name">Pizza Steak</h4><span class="dish__price">$11</span></div>
-        <p>Thinly sliced beef, marinara and oregano under melted provolone.</p>
+        <figure class="dish__pic">
+          <img src="img/m-pizza-steak.webp" srcset="img/m-pizza-steak-sm.webp 640w, img/m-pizza-steak.webp 1024w"
+               sizes="(max-width:819px) 92vw, 540px" width="1024" height="688" loading="lazy" decoding="async"
+               alt="Illustration of a pizza steak sandwich: thin-sliced beef under marinara, provolone and oregano.">
+        </figure>
+        <div class="dish__body">
+          <div class="dish__top"><h4 class="dish__name">Pizza Steak</h4><span class="dish__price">$11</span></div>
+          <p>Thinly sliced beef, marinara and oregano under melted provolone.</p>
+        </div>
       </article>
     </div>
 
     <h3 class="rv" style="margin:2.8rem 0 1.2rem;color:var(--flame-core)">Chicken Subs</h3>
     <div class="menu-grid" data-tilt>
       <article class="dish rv">
-        <div class="dish__top"><h4 class="dish__name">Chicken Parm</h4><span class="dish__price">$11</span></div>
-        <p>Diced grilled chicken, marinara, provolone, grated parmesan over the top.</p>
+        <figure class="dish__pic">
+          <img src="img/m-chicken-parm.webp" srcset="img/m-chicken-parm-sm.webp 640w, img/m-chicken-parm.webp 1024w"
+               sizes="(max-width:819px) 92vw, 540px" width="1024" height="688" loading="lazy" decoding="async"
+               alt="Illustration of a chicken parm sub: diced grilled chicken, marinara, provolone and grated parmesan.">
+        </figure>
+        <div class="dish__body">
+          <div class="dish__top"><h4 class="dish__name">Chicken Parm</h4><span class="dish__price">$11</span></div>
+          <p>Diced grilled chicken, marinara, provolone, grated parmesan over the top.</p>
+        </div>
       </article>
       <article class="dish rv rv-d1">
-        <div class="dish__top"><h4 class="dish__name">Garlic Parm</h4><span class="dish__price">$10</span></div>
-        <p>Diced chicken in garlic parmesan sauce with provolone and grated parmesan.</p>
+        <figure class="dish__pic">
+          <img src="img/m-garlic-parm.webp" srcset="img/m-garlic-parm-sm.webp 640w, img/m-garlic-parm.webp 1024w"
+               sizes="(max-width:819px) 92vw, 540px" width="1024" height="688" loading="lazy" decoding="async"
+               alt="Illustration of a garlic parm sub: diced chicken in garlic parmesan sauce with provolone.">
+        </figure>
+        <div class="dish__body">
+          <div class="dish__top"><h4 class="dish__name">Garlic Parm</h4><span class="dish__price">$10</span></div>
+          <p>Diced chicken in garlic parmesan sauce with provolone and grated parmesan.</p>
+        </div>
       </article>
       <article class="dish rv rv-d2">
-        <div class="dish__top"><h4 class="dish__name">Chicken Teriyaki</h4><span class="dish__price">$10</span></div>
-        <p>Diced grilled chicken sautéed in teriyaki sauce, topped with provolone.</p>
+        <figure class="dish__pic">
+          <img src="img/m-chicken-teriyaki.webp" srcset="img/m-chicken-teriyaki-sm.webp 640w, img/m-chicken-teriyaki.webp 1024w"
+               sizes="(max-width:819px) 92vw, 540px" width="1024" height="688" loading="lazy" decoding="async"
+               alt="Illustration of a chicken teriyaki sub: diced grilled chicken in teriyaki sauce under provolone.">
+        </figure>
+        <div class="dish__body">
+          <div class="dish__top"><h4 class="dish__name">Chicken Teriyaki</h4><span class="dish__price">$10</span></div>
+          <p>Diced grilled chicken sautéed in teriyaki sauce, topped with provolone.</p>
+        </div>
       </article>
       <article class="dish rv rv-d3">
-        <div class="dish__top"><h4 class="dish__name">Buffalo Chicken</h4><span class="dish__price">$11</span></div>
-        <p>Diced grilled chicken sautéed in buffalo sauce, topped with your choice of cheese.</p>
+        <figure class="dish__pic">
+          <img src="img/m-buffalo-chicken.webp" srcset="img/m-buffalo-chicken-sm.webp 640w, img/m-buffalo-chicken.webp 1024w"
+               sizes="(max-width:819px) 92vw, 540px" width="1024" height="688" loading="lazy" decoding="async"
+               alt="Illustration of a buffalo chicken sub: diced grilled chicken in buffalo sauce under melted cheese.">
+        </figure>
+        <div class="dish__body">
+          <div class="dish__top"><h4 class="dish__name">Buffalo Chicken</h4><span class="dish__price">$11</span></div>
+          <p>Diced grilled chicken sautéed in buffalo sauce, topped with your choice of cheese.</p>
+        </div>
       </article>
     </div>
 
@@ -939,28 +1060,56 @@ section{position:relative}
       <div class="stuffit__price">+$3</div>
     </div>
 
-    <div class="menu-split">
-      <div class="menu-card rv">
-        <h3>Off the flat-top</h3>
-        <ul class="pricelist">
-          <li><span class="nm">Street Tacos (3)</span><span class="dots"></span><span class="pr">$10</span></li>
-          <li><span class="nm">Loaded Fries &mdash; any Philly or sub, built on fries</span><span class="dots"></span><span class="pr">$10</span></li>
-          <li><span class="nm">Combo &mdash; add fries and a drink</span><span class="dots"></span><span class="pr">$5</span></li>
-          <li><span class="nm">Bottled drink &mdash; water, Gatorade, pop</span><span class="dots"></span><span class="pr">$2</span></li>
-        </ul>
-        <p class="dim" style="margin-top:1rem;font-size:.9rem">Tacos come three to an order: seasoned ground beef or grilled chicken, shredded cheese, with or without onions. Salsa and sour cream on the side.</p>
-      </div>
-      <div class="menu-card rv rv-d2">
-        <h3>Fries</h3>
-        <ul class="pricelist">
-          <li><span class="nm">Classic</span><span class="dots"></span><span class="pr">$3</span></li>
-          <li><span class="nm">Cheese</span><span class="dots"></span><span class="pr">$4</span></li>
-          <li><span class="nm">Bacon</span><span class="dots"></span><span class="pr">$4</span></li>
-          <li><span class="nm">Bacon Cheese</span><span class="dots"></span><span class="pr">$5</span></li>
-          <li><span class="nm">Garlic Parm</span><span class="dots"></span><span class="pr">$5</span></li>
-          <li><span class="nm">Buffalo</span><span class="dots"></span><span class="pr">$5</span></li>
-        </ul>
-      </div>
+    <h3 class="rv" style="margin:2.8rem 0 1.2rem;color:var(--flame-core)">Off the flat-top</h3>
+    <div class="bites bites--4">
+      <article class="bite rv">
+        <figure class="bite__pic"><img src="img/m-street-tacos.webp" width="480" height="480" loading="lazy" decoding="async" alt="Illustration of three street tacos on flour tortillas with ground beef, shredded cheese and onions, salsa and sour cream beside them."></figure>
+        <div class="bite__row"><h4 class="bite__name">Street Tacos (3)</h4><span class="bite__price">$10</span></div>
+        <p class="bite__desc">Seasoned ground beef or grilled chicken, shredded cheese, with or without onions. Salsa and sour cream on the side.</p>
+      </article>
+      <article class="bite rv rv-d1">
+        <figure class="bite__pic"><img src="img/m-loaded-fries.webp" width="480" height="480" loading="lazy" decoding="async" alt="Illustration of fries loaded with cheesesteak beef, grilled onions and cheese sauce."></figure>
+        <div class="bite__row"><h4 class="bite__name">Loaded Fries</h4><span class="bite__price">$10</span></div>
+        <p class="bite__desc">Any Philly or sub, built on fries instead of a roll.</p>
+      </article>
+      <article class="bite rv rv-d2">
+        <figure class="bite__pic"><img src="img/m-combo.webp" width="480" height="480" loading="lazy" decoding="async" alt="Illustration of half a cheesesteak with a boat of fries and a bottle of water."></figure>
+        <div class="bite__row"><h4 class="bite__name">Make it a Combo</h4><span class="bite__price">+$5</span></div>
+        <p class="bite__desc">Add fries and a drink.</p>
+      </article>
+      <article class="bite rv rv-d3">
+        <figure class="bite__pic"><img src="img/m-drinks.webp" width="480" height="480" loading="lazy" decoding="async" alt="Illustration of three unbranded bottles on ice: water, an orange sports drink and a cola."></figure>
+        <div class="bite__row"><h4 class="bite__name">Bottled Drink</h4><span class="bite__price">$2</span></div>
+        <p class="bite__desc">Water, Gatorade or pop.</p>
+      </article>
+    </div>
+
+    <h3 class="rv" style="margin:2.8rem 0 1.2rem;color:var(--flame-core)">Fries</h3>
+    <div class="bites bites--6">
+      <article class="bite rv">
+        <figure class="bite__pic"><img src="img/m-fries-classic.webp" width="480" height="480" loading="lazy" decoding="async" alt="Illustration of a boat of plain golden fries."></figure>
+        <div class="bite__row"><h4 class="bite__name">Classic</h4><span class="bite__price">$3</span></div>
+      </article>
+      <article class="bite rv rv-d1">
+        <figure class="bite__pic"><img src="img/m-fries-cheese.webp" width="480" height="480" loading="lazy" decoding="async" alt="Illustration of fries covered in yellow cheese sauce."></figure>
+        <div class="bite__row"><h4 class="bite__name">Cheese</h4><span class="bite__price">$4</span></div>
+      </article>
+      <article class="bite rv rv-d2">
+        <figure class="bite__pic"><img src="img/m-fries-bacon.webp" width="480" height="480" loading="lazy" decoding="async" alt="Illustration of fries topped with crumbled bacon."></figure>
+        <div class="bite__row"><h4 class="bite__name">Bacon</h4><span class="bite__price">$4</span></div>
+      </article>
+      <article class="bite rv rv-d3">
+        <figure class="bite__pic"><img src="img/m-fries-bacon-cheese.webp" width="480" height="480" loading="lazy" decoding="async" alt="Illustration of fries with cheese sauce and crumbled bacon."></figure>
+        <div class="bite__row"><h4 class="bite__name">Bacon Cheese</h4><span class="bite__price">$5</span></div>
+      </article>
+      <article class="bite rv rv-d4">
+        <figure class="bite__pic"><img src="img/m-fries-garlic-parm.webp" width="480" height="480" loading="lazy" decoding="async" alt="Illustration of fries with garlic parmesan sauce and melted shredded cheese."></figure>
+        <div class="bite__row"><h4 class="bite__name">Garlic Parm</h4><span class="bite__price">$5</span></div>
+      </article>
+      <article class="bite rv rv-d5">
+        <figure class="bite__pic"><img src="img/m-fries-buffalo.webp" width="480" height="480" loading="lazy" decoding="async" alt="Illustration of fries with buffalo sauce and shredded cheese."></figure>
+        <div class="bite__row"><h4 class="bite__name">Buffalo</h4><span class="bite__price">$5</span></div>
+      </article>
     </div>
 
     <h3 class="rv" style="margin:2.8rem 0 1.2rem;color:var(--flame-core)">Munchies <span style="font-size:.6em;color:var(--gold)">$6 each</span></h3>
@@ -983,9 +1132,9 @@ section{position:relative}
       </div>
       <div class="feature__txt">
         <div class="strip" style="grid-template-columns:1fr">
-          <div class="rv"><h4>Pretzel Bites</h4><p>Served with cheese sauce.</p></div>
-          <div class="rv rv-d1"><h4>Mozzarella Sticks</h4><p>Served with marinara.</p></div>
-          <div class="rv rv-d2"><h4>Jalape&ntilde;o Poppers</h4><p>Served with hot sauce.</p></div>
+          <div class="rv strip__pic"><img src="img/food-pretzel-thumb.webp" width="240" height="240" loading="lazy" decoding="async" alt=""><div class="strip__txt"><h4>Pretzel Bites</h4><p>Eight bites cooked in garlic butter, with cheese sauce.</p></div></div>
+          <div class="rv rv-d1 strip__pic"><img src="img/m-mozzarella-sticks.webp" width="240" height="240" loading="lazy" decoding="async" alt="Illustration of six fried mozzarella sticks with marinara."><div class="strip__txt"><h4>Mozzarella Sticks</h4><p>Six, served with marinara.</p></div></div>
+          <div class="rv rv-d2 strip__pic"><img src="img/m-jalapeno-poppers.webp" width="240" height="240" loading="lazy" decoding="async" alt="Illustration of six fried jalape&ntilde;o poppers with hot sauce."><div class="strip__txt"><h4>Jalape&ntilde;o Poppers</h4><p>Six, filled with cheddar, served with hot sauce.</p></div></div>
         </div>
         <!-- [CONFIRM] This photograph came from the business's published gallery but looks
      like supplied stock rather than their own plate. Labelled "serving suggestion",
@@ -1191,7 +1340,7 @@ section{position:relative}
 
     <div class="foot__base">
       <p>&copy; <span id="yr">2026</span> East Coast Eatz, LLC &middot; Est. 2013</p>
-      <p>Photographs come from the business&rsquo;s own published galleries. The two menu clips are those photographs, sharpened and set in motion with AI.</p>
+      <p>Truck photographs are the business&rsquo;s own. Dish pictures on the menu are AI-made illustrations; the two menu clips are published photographs set in motion with AI.</p>
     </div>
   </div>
 </footer>

@@ -77,10 +77,11 @@ longer words so both would need adjusting back.
 
 ## 2. The images
 
-Eleven WebP files and two MP4 clips, 2.0 MB total, of which a first visit
-downloads roughly 300 KB — everything else is lazy. Originals were pulled at
-full resolution (`_o` suffix on the StreetFoodFinder CDN) and resized with
-Pillow. Section 8 covers what was AI-processed.
+Forty WebP files and two MP4 clips, 3.4 MB total, of which a first visit
+downloads roughly 300 KB — everything else is lazy. The truck photographs
+were pulled at full resolution (`_o` suffix on the StreetFoodFinder CDN) and
+resized with Pillow. The twenty dish pictures on the menu (`m-*.webp`) are
+**AI-made illustrations**, not photographs. Section 8 covers all of it.
 
 | File | Shows | Used for |
 |---|---|---|
@@ -94,6 +95,11 @@ Pillow. Section 8 covers what was AI-processed.
 | `food-pretzel.webp` / `-sm.webp` | pretzel bites, 1280px and 640px | menu feature, munchies |
 | `food-steak.mp4` | 4.0 s seamless loop, 960px, 274 KB | plays over the cheesesteak still |
 | `food-pretzel.mp4` | 4.5 s seamless loop, 960px, 271 KB | plays over the pretzel still |
+| `food-pretzel-thumb.webp` | the same pretzel photograph at 240px | pretzel row in Munchies |
+| `m-*.webp` + `m-*-sm.webp` | 8 sandwich illustrations, 1024px and 640px | one on each dish card |
+| `m-street-tacos`, `m-loaded-fries`, `m-combo`, `m-drinks` | illustrations, 480px | Off the flat-top cards |
+| `m-fries-*.webp` | 6 fries illustrations, 480px | Fries cards |
+| `m-mozzarella-sticks`, `m-jalapeno-poppers` | illustrations, 240px | Munchies rows |
 | `logo.webp` | the wordmark, upscaled, background keyed out | nav + footer + 404 |
 
 **The hero is full-bleed at every width, and it crops the trailer.** That is
@@ -297,9 +303,11 @@ plays and whether every image box has the ratio it should.
 - No invented service areas. The only places named — Liberty Township,
   Fairfield, Cincinnati — come from the trailer, from booked events, or from
   the business's own listing.
-- No generated subjects. Every photograph is one the business published.
-  Three assets were AI-processed from those photographs — see section 8 —
-  and the page footer says so in plain words.
+- Generated imagery is labelled. Every *photograph* is one the business
+  published. The twenty dish pictures on the menu are AI-made illustrations
+  and the page says so three ways: a line under the menu heading, the word
+  "Illustration" at the start of each alt text, and the footer. Three more
+  assets were AI-processed from the real photographs — see section 8.
 - No form pretends to send anything, because there is no form.
 - Anything unverified is marked `[CONFIRM]`.
 
@@ -307,7 +315,30 @@ plays and whether every image box has the ratio it should.
 
 ## 8. What Higgsfield was used for
 
-Added 2026-11-11. 67.25 credits spent.
+Added 2026-11-11. 97.25 credits spent in total.
+
+### The twenty dish illustrations (30 credits)
+
+The truck has published two food photographs. The menu was to have a
+picture of everything on it, so the other twenty were generated with
+GPT Image 2.6 at high quality, 1.5 credits each.
+
+- **Written from the menu, not imagined.** Each prompt lists the dish's
+  ingredients exactly as the listings give them and then names what must
+  *not* appear — no lettuce or tomato on a cheesesteak, diced grilled chicken
+  rather than a breaded cutlet on the chicken parm, six mozzarella sticks,
+  six poppers. Every result was checked against the menu line before use.
+- **One fixed scene** so they read as a set: red-check paper boat, dark slate,
+  warm light from the upper left. The two Munchies illustrations use white
+  parchment on pale wood instead, to sit beside the real pretzel photograph.
+- **No brands.** The drinks are three unlabelled bottles; "Gatorade" appears
+  only as a word in the listing.
+- **Disclosed, and flagged.** They carry a `[CONFIRM]` marker: the owner
+  should either approve illustrations or send real plate photography. A real
+  photo drops straight in — same file name, same size, then delete the word
+  "Illustration" from that alt text.
+
+The pretzel row uses the truck's own photograph, not an illustration.
 
 **Shipped**
 
