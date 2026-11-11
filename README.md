@@ -153,21 +153,25 @@ only claim on the page that rests on one source.
 
 ### Where it is right now
 
-Pushed to **`juliusjackson422-dev/east-coast-eatz-site`**, branch `main`,
-and the repository is **private**.
+**Live as a demo since 2026-11-11:**
+**https://juliusjackson422-dev.github.io/east-coast-eatz-site/**
 
-GitHub Pages will not serve it in that state — the API answers
-*"Your current plan does not support GitHub Pages for this repository"*,
-which is the same free-plan limit that caught `therapeutic-cleaning`.
-Two ways out:
+Repository `juliusjackson422-dev/east-coast-eatz-site`, public, GitHub Pages
+serving `main` from `/`. A push to `main` redeploys in about half a minute.
 
-```bash
-gh repo edit juliusjackson422-dev/east-coast-eatz-site --visibility public --accept-visibility-change-consequences
-```
+Verified on the live URL: the page and all thirteen assets answer 200 over
+HTTPS, both clips are served as `video/mp4` and honour Range requests, an
+unknown path returns this site's own 404 page, and `noindex` is in the
+served markup.
 
-then enable Pages on `main` / `/`. Or point **Cloudflare Pages** at it
-instead, which serves private repositories on the free plan and is the
-route to the real domain anyway — see below.
+It is a **demo**, not a launch. `noindex` stays on and `prelaunch-check.sh`
+still reports NOT READY, both deliberately — see section 0.
+
+The repository had to be public: on the free plan GitHub Pages refuses a
+private one (*"Your current plan does not support GitHub Pages for this
+repository"*), the same limit that caught `therapeutic-cleaning`.
+**Cloudflare Pages** serves private repositories on the free plan and is
+the route to the real domain anyway — see below.
 
 ### The destination
 
