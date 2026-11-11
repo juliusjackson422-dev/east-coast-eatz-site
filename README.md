@@ -44,7 +44,7 @@ founding claims or service areas were made up, and no imagery was generated.
 | What | Source |
 |---|---|
 | Menu items, descriptions, prices | `streetfoodfinder.com/EastCoastEatz` **and** `bestfoodtrucks.com/truck/east-coast-eatz/menu` — two independent current listings, prices agree |
-| Menu voice — "Wit"/"Witout", "Stuff It!", "Flavors 4 All Occasions" | photograph of the truck's own printed menu board |
+| Menu voice — "Stuff It!", "Flavors 4 All Occasions" | photograph of the truck's own printed menu board |
 | Phone, email | Facebook About + the trailer wrap |
 | Liberty Township, OH 45011 | printed on the trailer door |
 | Amoroso rolls from Philly | the trailer wrap + the StreetFoodFinder bio |
@@ -57,6 +57,22 @@ The menu board photo shows **older prices** ($9/$10) than the two live
 listings ($10/$11). The page uses the live prices. The board is on the page
 because the wording on it is the business's own voice, not because of the numbers.
 
+### "Wit" / "Witout"
+
+The truck's own board reads *'Order Up "Wit" or "Witout" Onions'* — the
+Philadelphia way of ordering a cheesesteak, and a real piece of the brand.
+Earlier drafts carried that spelling through the hero, the marquee and every
+dish description.
+
+**It is gone.** On 2026-11-09 the owner's rep read it as a misspelling, so
+every instance on the page now says "with" / "without". The board photograph
+in the menu section still shows the original wording, which is the honest
+place for it — it is a photograph of their sign, not a styling choice.
+
+Do not put it back without asking. If the owner wants it, it is a find and
+replace, and the hero headline and menu heading were rewritten around the
+longer words so both would need adjusting back.
+
 ---
 
 ## 2. The images
@@ -66,21 +82,30 @@ Nine WebP files, 1.1 MB total. Originals were pulled at full resolution
 
 | File | Shows | Used for |
 |---|---|---|
-| `hero-truck.webp` | the trailer, window open, brick alley | desktop hero |
-| `hero-truck-sm.webp` | same, smaller | tablet hero + gallery |
-| `hero-portrait.webp` | the trailer's branded side | mobile hero |
+| `hero-truck.webp` | the trailer, window open, brick alley | hero above 1200px |
+| `hero-truck-sm.webp` | same crop, smaller | hero 820–1200px + gallery |
+| `hero-portrait.webp` | the trailer's branded side | hero below 820px |
 | `truck-event.webp` | customers at the window | catering + gallery |
 | `truck-park.webp` | trailer by a pond, flags behind | story + gallery |
 | `menu-board.webp` | the printed board on the truck | menu section |
-| `food-steak.webp` | cheesesteak close-up (560px) | not currently placed |
-| `food-pretzel.webp` | pretzel bites (560px) | not currently placed |
+| `food-steak.webp` | cheesesteak close-up (560px) | menu feature, cheesesteaks |
+| `food-pretzel.webp` | pretzel bites (560px) | menu feature, munchies |
 | `logo.webp` | the wordmark, background keyed out | nav + footer + 404 |
 
-**The two food photos are not on the page.** At 560×560 they are the only
-images the business has published at that size, and they look like stock
-rather than their own plate. The menu is typographic instead, which reads
-better than padding it with pictures that may not be theirs. If the owner
-sends real plate photography, that is where it goes.
+**The hero is full-bleed at every width, and it crops the trailer.** That is
+deliberate and it was asked for. A stacked variant was built — words on navy
+with the whole trailer underneath at its own aspect ratio — and then reverted
+on 2026-11-09 because the owner's rep preferred the full-bleed look. If you
+ever want it back, it was a single `@media (max-width:1100px)` block; the
+git history has it.
+
+**The two food photos are now on the page**, as the two animated feature
+blocks in the menu. They came from the business's published gallery, but at
+560×560 and shot on a styled surface they look like supplied stock rather
+than their own plate. Both are labelled **"Serving suggestion"** on the page,
+which is honest either way, and both carry a `[CONFIRM]` marker. Swap them
+for real plate photography when the owner sends it — the markup does not
+need to change, only the two files.
 
 The Facebook cover photo is a good full-width cheesesteak shot and would make
 a strong second hero — it is behind a login wall, so ask the owner for the file.
@@ -93,13 +118,17 @@ python -I <scratchpad>/tools/towebp.py  src-dir  out-dir  max-width  [quality]
 
 ---
 
-## 3. The two `[CONFIRM]` markers
+## 3. The `[CONFIRM]` markers
 
-**`index.html` — the four schedule dates.**
-Read from StreetFoodFinder on 2026-11-05. They are in the markup as
-`data-date="YYYYMMDD"`, and `prelaunch-check.sh` fails if any has passed.
-Two options: keep them current by hand, or delete the four cards and leave
-only the live-schedule link. The link is already there either way.
+**`index.html` — the schedule dates.**
+Last refreshed from StreetFoodFinder on 2026-11-09. They are in the markup as
+`data-date="YYYYMMDD"`, and `prelaunch-check.sh` fails if any has passed —
+it caught the 7 November date four days after it was written, which is what
+it is for. Two options: keep them current by hand, or delete the cards and
+leave only the live-schedule link. The link is already there either way.
+
+The grid uses `auto-fit`, so the number of cards can change without leaving
+an orphan on its own row. Three gigs make three columns, four make four.
 
 **`index.html` — University Eatz & Arcade.**
 The trailer wrap reads *"Visit Our Restaurant — 3701 Montgomery rd,
@@ -109,6 +138,8 @@ Mike Martin, Brad Baker and Alan Pyrcz as its operators and does not mention
 East Coast Eatz. The truck advertises the place; the exact relationship is
 not established. **Confirm it with the owner or delete the block.** It is the
 only claim on the page that rests on one source.
+
+**`index.html` ×2 — the two food photographs.** See section 2.
 
 ---
 
@@ -176,6 +207,11 @@ The brief was "the best" animations, fast. What is here:
 - **Hero parallax** — the picture drifts down at 0.22× scroll, the words up
   at 0.07×, and the block fades out across the first three-quarters of a
   viewport.
+- **A slow push-in on the food**, 22 seconds end to end, with **steam**
+  rising off the plate — three or four blurred discs on their own durations
+  and delays, each drifting up and sideways as it fades. Both are pure CSS
+  on cached layers.
+- **A gold rule that draws itself** under each dish name as the card arrives.
 - **Pointer tilt** on the menu cards — a 7° perspective rotation with a glow
   that tracks the cursor.
 - An **ambient blue flame** along the bottom of the hero: seven blurred,

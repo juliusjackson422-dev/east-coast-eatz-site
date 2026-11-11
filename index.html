@@ -29,7 +29,14 @@
                    bestfoodtrucks.com/truck/east-coast-eatz/menu
                    (two independent current sources, prices agree)
   Menu voice       photograph of the truck's own printed menu board
-                   ("Wit"/"Witout", "Stuff It!", "Flavors 4 All Occasions")
+                   ("Stuff It!", "Flavors 4 All Occasions")
+
+  NOTE ON "WIT"/"WITOUT": the truck's own board reads 'Order Up "Wit" or
+  "Witout" Onions' — the Philadelphia way of ordering. Earlier drafts used
+  that spelling on the page. The owner's rep read it as a typo, so every
+  instance now says "with" / "without". The board photograph in the menu
+  section still shows the original wording, which is the honest place for
+  it. Do not put it back without asking.
   Phone / email    Facebook page About + the trailer wrap
   Address          the trailer's own door: Liberty Township, Ohio 45011
   Amoroso rolls    the trailer wrap + the StreetFoodFinder bio
@@ -404,6 +411,52 @@ section{position:relative}
 .cheese strong{font-family:Anton,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--flame-core);font-weight:400}
 .cheese span{font-size:.95rem;color:#cdd8f0}
 
+/* ---- food feature: slow push-in on the plate, steam coming off it ---- */
+.feature{
+  display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(1.5rem,4vw,3.2rem);
+  align-items:center;margin:0 0 2.4rem;
+}
+.feature--flip{grid-template-columns:1.1fr .9fr}
+.feature--flip .feature__media{order:2}
+.feature__media{position:relative}
+.kb{
+  margin:0;overflow:hidden;border-radius:16px;border:1px solid var(--line);
+  box-shadow:0 30px 70px -34px rgba(0,0,0,.95);
+}
+.kb img{
+  width:100%;display:block;aspect-ratio:1/1;object-fit:cover;
+  transform:scale(1.03);will-change:transform;
+  animation:kenburns 22s ease-in-out infinite alternate;
+}
+@keyframes kenburns{
+  from{transform:scale(1.03) translate3d(0,0,0)}
+  to  {transform:scale(1.13) translate3d(-2%,1.5%,0)}
+}
+/* a warm rim so the plate sits in the navy instead of floating on it */
+.feature__media::after{
+  content:"";position:absolute;inset:-14%;z-index:-1;border-radius:50%;
+  background:radial-gradient(50% 50% at 50% 50%,rgba(255,192,46,.2),transparent 68%);
+  filter:blur(26px);
+}
+.steam{position:absolute;left:14%;right:14%;top:-56px;height:96px;z-index:3;pointer-events:none}
+.steam i{
+  position:absolute;bottom:0;width:40px;height:40px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.55),rgba(255,255,255,0) 68%);
+  filter:blur(8px);opacity:0;will-change:transform,opacity;
+  animation:steam var(--sd,5.4s) ease-in-out infinite;animation-delay:var(--sdl,0s);
+}
+@keyframes steam{
+  0%  {transform:translate3d(0,18px,0) scale(.55);opacity:0}
+  22% {opacity:.72}
+  65% {opacity:.38}
+  100%{transform:translate3d(var(--sx,12px),-78px,0) scale(1.6);opacity:0}
+}
+.feature h3{margin-bottom:.7rem}
+.feature__note{
+  margin-top:1.1rem;font-size:.78rem;letter-spacing:.04em;color:var(--muted-dim);
+  border-left:2px solid var(--line-hi);padding-left:.8rem
+}
+
 .menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.1rem}
 .dish{
   position:relative;padding:1.6rem 1.5rem 1.5rem;border-radius:14px;
@@ -423,8 +476,16 @@ section{position:relative}
 .dish__top{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:.5rem}
 .dish__name{
   font-family:Anton,sans-serif;font-size:clamp(1.25rem,2vw,1.6rem);text-transform:uppercase;line-height:1;
-  min-width:0;overflow-wrap:anywhere;
+  min-width:0;overflow-wrap:anywhere;position:relative;padding-bottom:.3em;
 }
+/* a gold rule draws itself under the name as the card arrives */
+.dish__name::after{
+  content:"";position:absolute;left:0;bottom:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-deep));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .85s var(--ease-out) .2s;
+}
+.dish.in .dish__name::after{transform:scaleX(1)}
 .dish__price{font-family:Anton,sans-serif;font-size:clamp(1.25rem,2vw,1.6rem);color:var(--gold);line-height:1;flex-shrink:0}
 .dish p{font-size:.96rem;color:#c3cfe8;margin:0}
 .dish__tag{
@@ -476,7 +537,7 @@ section{position:relative}
 .board__fig img{width:100%}
 
 /* ===================== SCHEDULE ===================== */
-.sched{display:grid;grid-template-columns:repeat(auto-fit,minmax(234px,1fr));gap:1rem}
+.sched{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem}
 .gig{
   position:relative;padding:1.5rem 1.4rem;border-radius:14px;overflow:hidden;
   background:linear-gradient(170deg,rgba(27,45,99,.5),rgba(9,16,31,.8));
@@ -492,7 +553,7 @@ section{position:relative}
 .gig:hover::after{transform:scaleX(1)}
 .gig__day{font-family:Anton,sans-serif;font-size:.86rem;letter-spacing:.2em;color:var(--flame-1);text-transform:uppercase}
 .gig__date{font-family:Anton,sans-serif;font-size:clamp(2.4rem,5.4vw,3.4rem);line-height:.86;margin:.3rem 0 .2rem}
-.gig__date small{font-size:.36em;letter-spacing:.14em;display:inline-block;margin-left:.25em;vertical-align:.5em;color:var(--muted)}
+.gig__date small{font-size:.36em;letter-spacing:.14em;display:inline-block;vertical-align:.5em;color:var(--muted)}
 .gig__where{font-weight:600;margin:.85rem 0 .25rem;font-size:1.02rem;overflow-wrap:anywhere}
 .gig__addr,.gig__time{font-size:.88rem;color:var(--muted);margin:0}
 .gig__time{color:var(--gold);font-weight:600;margin-top:.5rem}
@@ -563,11 +624,11 @@ section{position:relative}
 @media (min-width:820px){
   .menu-grid{grid-template-columns:repeat(2,1fr)}
 }
-@media (min-width:620px){
-  .sched{grid-template-columns:repeat(2,1fr)}
-}
-@media (min-width:1180px){
-  .sched{grid-template-columns:repeat(4,1fr)}
+@media (max-width:860px){
+  .feature,.feature--flip{grid-template-columns:1fr;gap:1.6rem}
+  .feature--flip .feature__media{order:0}
+  .kb img{aspect-ratio:16/10}
+  .steam{top:-44px;height:76px}
 }
 @media (max-width:980px){
   .story,.cater,.board{grid-template-columns:1fr}
@@ -606,7 +667,9 @@ section{position:relative}
   .mask > span{transform:none}
   .wipe img{transform:none}
   .wipe::after{transform:scaleX(0)}
-  .flames{display:none}
+  .flames,.steam{display:none}
+  .kb img{animation:none;transform:none}
+  .dish__name::after{transform:scaleX(1)}
   .ribbon__track{animation:none}
   .cue i{animation:none}
   .hero__media{transform:none!important}
@@ -677,10 +740,10 @@ section{position:relative}
     <div class="wrap">
       <p class="eyebrow">Est. 2013 &middot; Greater Cincinnati</p>
       <h1>
-        <span class="mask"><span>Wit</span></span>
-        <span class="mask mask-d1"><span class="gold">or witout.</span></span>
+        <span class="mask"><span>With</span></span>
+        <span class="mask mask-d1"><span class="gold">or without.</span></span>
       </h1>
-      <p class="hero__sub rv rv-d3">Authentic Philly cheesesteaks off a flat-top, out of a blue-flame trailer. On Amoroso rolls, brought straight from Philly.</p>
+      <p class="hero__sub rv rv-d3">Onions, that is. Authentic Philly cheesesteaks chopped on a flat-top in a blue-flame trailer, on Amoroso rolls brought straight from Philly.</p>
       <div class="hero__cta rv rv-d4">
         <a class="btn btn--gold" href="#menu">See the menu</a>
         <a class="btn btn--ghost" href="#schedule">Find the truck</a>
@@ -700,14 +763,14 @@ section{position:relative}
 <div class="ribbon" aria-hidden="true">
   <div class="ribbon__track">
     <div class="ribbon__set">
-      <b>Wit or Witout</b><s></s>
+      <b>With or Without</b><s></s>
       <b class="alt">Stuff It &mdash; 50% more meat</b><s></s>
       <b>Amoroso Rolls from Philly</b><s></s>
       <b class="alt">Flavors 4 All Occasions</b><s></s>
       <b>Est. 2013</b><s></s>
     </div>
     <div class="ribbon__set">
-      <b>Wit or Witout</b><s></s>
+      <b>With or Without</b><s></s>
       <b class="alt">Stuff It &mdash; 50% more meat</b><s></s>
       <b>Amoroso Rolls from Philly</b><s></s>
       <b class="alt">Flavors 4 All Occasions</b><s></s>
@@ -733,7 +796,7 @@ section{position:relative}
         </div>
         <dl class="facts rv rv-d4">
           <div><dt>2013</dt><dd>On the road since</dd></div>
-          <div><dt>Amoroso</dt><dd>Rolls from Philly</dd></div>
+          <div><dt>Amoroso&rsquo;s</dt><dd>Rolls from Philly</dd></div>
           <div><dt>Any size</dt><dd>Catering booked</dd></div>
           <div><dt>Cards</dt><dd>Accepted at the window</dd></div>
         </dl>
@@ -754,10 +817,10 @@ section{position:relative}
     <div class="sec__head">
       <p class="eyebrow gold rv">The menu</p>
       <h2 class="rv rv-d1">
-        <span class="mask"><span>Order up</span></span>
-        <span class="mask mask-d1"><span>&ldquo;wit&rdquo; or &ldquo;witout&rdquo;</span></span>
+        <span class="mask"><span>Order up with</span></span>
+        <span class="mask mask-d1"><span>or without onions.</span></span>
       </h2>
-      <p class="lede rv rv-d3" style="margin-top:1.3rem">Onions, that is. Everything below is griddled to order.</p>
+      <p class="lede rv rv-d3" style="margin-top:1.3rem">Everything below is chopped and griddled to order.</p>
     </div>
 
     <div class="cheese rv">
@@ -765,20 +828,46 @@ section{position:relative}
       <span>Cheese sauce &nbsp;&middot;&nbsp; Provolone &nbsp;&middot;&nbsp; American, white or yellow</span>
     </div>
 
+    <div class="feature rv">
+      <div class="feature__media">
+        <figure class="kb">
+          <img src="img/food-steak.webp" width="560" height="560" loading="lazy" decoding="async"
+               alt="A cheesesteak on a roll under cheese sauce and grilled onions.">
+        </figure>
+        <span class="steam" aria-hidden="true">
+          <i style="--sd:5.2s;--sdl:0s;   --sx:14px; left:8%"></i>
+          <i style="--sd:6.1s;--sdl:1.1s; --sx:-10px;left:31%"></i>
+          <i style="--sd:5.6s;--sdl:2.3s; --sx:16px; left:55%"></i>
+          <i style="--sd:6.6s;--sdl:3.1s; --sx:-8px; left:78%"></i>
+        </span>
+      </div>
+      <div class="feature__txt">
+        <p class="eyebrow gold">Chopped to order</p>
+        <h3>Nothing sits under a heat lamp.</h3>
+        <p class="dim">The beef hits the flat-top when you order it. Onions go on beside it if you said
+          onions, cheese goes over the top, and the whole thing goes straight into an
+          Amoroso roll and straight out of the window. That is the only speed it runs at.</p>
+        <!-- [CONFIRM] This photograph came from the business's published gallery but looks
+     like supplied stock rather than their own plate. Labelled "serving suggestion",
+     which is honest either way. Swap it for real plate photography before launch. -->
+        <p class="feature__note">Serving suggestion</p>
+      </div>
+    </div>
+
     <h3 class="rv" style="margin-bottom:1.2rem;color:var(--flame-core)">Cheesesteaks</h3>
     <div class="menu-grid" data-tilt>
       <article class="dish rv">
         <div class="dish__top"><h4 class="dish__name">O.G. Philly</h4><span class="dish__price">$10</span></div>
-        <p>Thinly sliced beef, wit or witout onions, topped with your choice of cheese.</p>
+        <p>Thinly sliced beef, with or without onions, topped with your choice of cheese.</p>
         <span class="dish__tag">The one to order first</span>
       </article>
       <article class="dish rv rv-d1">
         <div class="dish__top"><h4 class="dish__name">Chicken Philly</h4><span class="dish__price">$10</span></div>
-        <p>Diced grilled chicken, wit or witout onions, topped with your choice of cheese.</p>
+        <p>Diced grilled chicken, with or without onions, topped with your choice of cheese.</p>
       </article>
       <article class="dish rv rv-d2">
         <div class="dish__top"><h4 class="dish__name">Pepper Steak</h4><span class="dish__price">$11</span></div>
-        <p>Thinly sliced beef and hot cherry peppers, wit or witout onions, your choice of cheese.</p>
+        <p>Thinly sliced beef and hot cherry peppers, with or without onions, your choice of cheese.</p>
       </article>
       <article class="dish rv rv-d3">
         <div class="dish__top"><h4 class="dish__name">Pizza Steak</h4><span class="dish__price">$11</span></div>
@@ -809,7 +898,7 @@ section{position:relative}
     <div class="stuffit rv">
       <div>
         <h3>Say &ldquo;Stuff It!&rdquo;</h3>
-        <p>Fifty percent more meat on any philly or sub. It is the correct decision and you know it.</p>
+        <p>Fifty percent more meat on any Philly or sub. It is the correct decision and you know it.</p>
       </div>
       <div class="stuffit__price">+$3</div>
     </div>
@@ -819,11 +908,11 @@ section{position:relative}
         <h3>Off the flat-top</h3>
         <ul class="pricelist">
           <li><span class="nm">Street Tacos (3)</span><span class="dots"></span><span class="pr">$10</span></li>
-          <li><span class="nm">Loaded Fries &mdash; any philly or sub, on fries</span><span class="dots"></span><span class="pr">$10</span></li>
+          <li><span class="nm">Loaded Fries &mdash; any Philly or sub, built on fries</span><span class="dots"></span><span class="pr">$10</span></li>
           <li><span class="nm">Combo &mdash; add fries and a drink</span><span class="dots"></span><span class="pr">$5</span></li>
           <li><span class="nm">Bottled drink &mdash; water, Gatorade, pop</span><span class="dots"></span><span class="pr">$2</span></li>
         </ul>
-        <p class="dim" style="margin-top:1rem;font-size:.9rem">Tacos come three to an order: seasoned ground beef or grilled chicken, shredded cheese, wit or witout onions. Salsa and sour cream on the side.</p>
+        <p class="dim" style="margin-top:1rem;font-size:.9rem">Tacos come three to an order: seasoned ground beef or grilled chicken, shredded cheese, with or without onions. Salsa and sour cream on the side.</p>
       </div>
       <div class="menu-card rv rv-d2">
         <h3>Fries</h3>
@@ -839,10 +928,29 @@ section{position:relative}
     </div>
 
     <h3 class="rv" style="margin:2.8rem 0 1.2rem;color:var(--flame-core)">Munchies <span style="font-size:.6em;color:var(--gold)">$6 each</span></h3>
-    <div class="strip">
-      <div class="rv"><h4>Pretzel Bites</h4><p>Served with cheese sauce.</p></div>
-      <div class="rv rv-d1"><h4>Mozzarella Sticks</h4><p>Served with marinara.</p></div>
-      <div class="rv rv-d2"><h4>Jalape&ntilde;o Poppers</h4><p>Served with hot sauce.</p></div>
+    <div class="feature feature--flip rv">
+      <div class="feature__media">
+        <figure class="kb">
+          <img src="img/food-pretzel.webp" width="560" height="560" loading="lazy" decoding="async"
+               alt="Salted pretzel bites piled on paper, with dips alongside.">
+        </figure>
+        <span class="steam" aria-hidden="true">
+          <i style="--sd:5.8s;--sdl:.4s;  --sx:-12px;left:14%"></i>
+          <i style="--sd:6.4s;--sdl:1.8s; --sx:15px; left:42%"></i>
+          <i style="--sd:5.1s;--sdl:2.9s; --sx:-9px; left:70%"></i>
+        </span>
+      </div>
+      <div class="feature__txt">
+        <div class="strip" style="grid-template-columns:1fr">
+          <div class="rv"><h4>Pretzel Bites</h4><p>Served with cheese sauce.</p></div>
+          <div class="rv rv-d1"><h4>Mozzarella Sticks</h4><p>Served with marinara.</p></div>
+          <div class="rv rv-d2"><h4>Jalape&ntilde;o Poppers</h4><p>Served with hot sauce.</p></div>
+        </div>
+        <!-- [CONFIRM] This photograph came from the business's published gallery but looks
+     like supplied stock rather than their own plate. Labelled "serving suggestion",
+     which is honest either way. Swap it for real plate photography before launch. -->
+        <p class="feature__note">Serving suggestion</p>
+      </div>
     </div>
 
     <div class="rv" style="margin-top:2.6rem">
@@ -884,37 +992,30 @@ section{position:relative}
     </div>
 
     <div class="sched">
-      <article class="gig rv" data-date="20261107">
+      <article class="gig rv" data-date="20261114">
         <p class="gig__day">Saturday</p>
-        <p class="gig__date">7<small>Nov</small></p>
-        <p class="gig__where">RPM Society Meet</p>
-        <p class="gig__addr">4655 Dixie Hwy, Fairfield</p>
-        <p class="gig__time">9:00 &ndash; 11:00 PM</p>
-      </article>
-      <article class="gig rv rv-d1" data-date="20261114">
-        <p class="gig__day">Saturday</p>
-        <p class="gig__date">14<small>Nov</small></p>
+        <p class="gig__date">14 <small>Nov</small></p>
         <p class="gig__where">Fairfield HS Cheer Showcase</p>
         <p class="gig__addr">8800 Holden Blvd, Fairfield</p>
         <p class="gig__time">10:30 AM &ndash; 3:30 PM</p>
       </article>
-      <article class="gig rv rv-d2" data-date="20261121">
+      <article class="gig rv rv-d1" data-date="20261121">
         <p class="gig__day">Saturday</p>
-        <p class="gig__date">21<small>Nov</small></p>
+        <p class="gig__date">21 <small>Nov</small></p>
         <p class="gig__where">Fairfield Cheerleading Invitational</p>
         <p class="gig__addr">8800 Holden Blvd, Fairfield</p>
         <p class="gig__time">7:30 AM &ndash; 3:00 PM</p>
       </article>
-      <article class="gig rv rv-d3" data-date="20261202">
+      <article class="gig rv rv-d2" data-date="20261202">
         <p class="gig__day">Wednesday</p>
-        <p class="gig__date">2<small>Dec</small></p>
+        <p class="gig__date">2 <small>Dec</small></p>
         <p class="gig__where">Jingle Mingle Business After Hours</p>
         <p class="gig__addr">7100 Foundry Row</p>
         <p class="gig__time">4:00 &ndash; 7:00 PM</p>
       </article>
     </div>
 
-    <!-- [CONFIRM] These four dates were read from StreetFoodFinder on 2026-11-05.
+    <!-- [CONFIRM] These dates were read from StreetFoodFinder on 2026-11-09.
          Re-check them before launch and keep them current, or replace this whole
          block with a link-only card so nothing on the page can go stale. -->
     <p class="sched__note rv">Dates and times change. Before you drive out, check the live schedule &mdash;
@@ -969,7 +1070,7 @@ section{position:relative}
     <div class="sec__head">
       <p class="eyebrow gold rv">The truck</p>
       <h2 class="rv rv-d1"><span class="mask"><span>You cannot miss it.</span></span></h2>
-      <p class="lede rv rv-d3" style="margin-top:1.3rem">Navy, blue flames down the side, phone number on the back. If you see it, it is open.</p>
+      <p class="lede rv rv-d3" style="margin-top:1.3rem">Navy, with blue flames climbing the sides and the phone number in yellow you can read from across a parking lot. If you see it, it is open.</p>
     </div>
 
     <div class="gal">
@@ -1049,7 +1150,7 @@ section{position:relative}
 
     <div class="foot__base">
       <p>&copy; <span id="yr">2026</span> East Coast Eatz, LLC &middot; Est. 2013</p>
-      <p>Photographs are the business&rsquo;s own. Nothing on this page is generated.</p>
+      <p>Photographs come from the business&rsquo;s own published galleries. Nothing here is AI-generated.</p>
     </div>
   </div>
 </footer>
