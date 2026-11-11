@@ -303,7 +303,7 @@ plays and whether every image box has the ratio it should.
 
 ## 8. What Higgsfield was used for
 
-Added 2026-11-11. 67.25 credits spent, 921.75 left on the Plus plan.
+Added 2026-11-11. 67.25 credits spent.
 
 **Shipped**
 
