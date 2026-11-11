@@ -145,6 +145,26 @@ only claim on the page that rests on one source.
 
 ## 4. Deploying
 
+### Where it is right now
+
+Pushed to **`juliusjackson422-dev/east-coast-eatz-site`**, branch `main`,
+and the repository is **private**.
+
+GitHub Pages will not serve it in that state — the API answers
+*"Your current plan does not support GitHub Pages for this repository"*,
+which is the same free-plan limit that caught `therapeutic-cleaning`.
+Two ways out:
+
+```bash
+gh repo edit juliusjackson422-dev/east-coast-eatz-site --visibility public --accept-visibility-change-consequences
+```
+
+then enable Pages on `main` / `/`. Or point **Cloudflare Pages** at it
+instead, which serves private repositories on the free plan and is the
+route to the real domain anyway — see below.
+
+### The destination
+
 The business owns **eastcoasteatz.com**. Right now it resolves to Wix
 (`Server: Pepyaka`) and returns **404** — so there is a domain with nothing
 on it. That is the destination.
