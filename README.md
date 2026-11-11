@@ -64,7 +64,7 @@ Philadelphia way of ordering a cheesesteak, and a real piece of the brand.
 Earlier drafts carried that spelling through the hero, the marquee and every
 dish description.
 
-**It is gone.** On 2026-11-09 the owner's rep read it as a misspelling, so
+**It is gone.** On 2026-11-09 it was flagged as reading like a misspelling, so
 every instance on the page now says "with" / "without". The board photograph
 in the menu section still shows the original wording, which is the honest
 place for it — it is a photograph of their sign, not a styling choice.
@@ -95,7 +95,7 @@ Nine WebP files, 1.1 MB total. Originals were pulled at full resolution
 **The hero is full-bleed at every width, and it crops the trailer.** That is
 deliberate and it was asked for. A stacked variant was built — words on navy
 with the whole trailer underneath at its own aspect ratio — and then reverted
-on 2026-11-09 because the owner's rep preferred the full-bleed look. If you
+on 2026-11-09 in favour of the full-bleed look. If you
 ever want it back, it was a single `@media (max-width:1100px)` block; the
 git history has it.
 
