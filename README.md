@@ -77,8 +77,10 @@ longer words so both would need adjusting back.
 
 ## 2. The images
 
-Nine WebP files, 1.1 MB total. Originals were pulled at full resolution
-(`_o` suffix on the StreetFoodFinder CDN) and resized with Pillow.
+Eleven WebP files and two MP4 clips, 2.0 MB total, of which a first visit
+downloads roughly 300 KB — everything else is lazy. Originals were pulled at
+full resolution (`_o` suffix on the StreetFoodFinder CDN) and resized with
+Pillow. Section 8 covers what was AI-processed.
 
 | File | Shows | Used for |
 |---|---|---|
@@ -88,9 +90,11 @@ Nine WebP files, 1.1 MB total. Originals were pulled at full resolution
 | `truck-event.webp` | customers at the window | catering + gallery |
 | `truck-park.webp` | trailer by a pond, flags behind | story + gallery |
 | `menu-board.webp` | the printed board on the truck | menu section |
-| `food-steak.webp` | cheesesteak close-up (560px) | menu feature, cheesesteaks |
-| `food-pretzel.webp` | pretzel bites (560px) | menu feature, munchies |
-| `logo.webp` | the wordmark, background keyed out | nav + footer + 404 |
+| `food-steak.webp` / `-sm.webp` | cheesesteak close-up, 1280px and 640px | menu feature, cheesesteaks |
+| `food-pretzel.webp` / `-sm.webp` | pretzel bites, 1280px and 640px | menu feature, munchies |
+| `food-steak.mp4` | 4.0 s seamless loop, 960px, 274 KB | plays over the cheesesteak still |
+| `food-pretzel.mp4` | 4.5 s seamless loop, 960px, 271 KB | plays over the pretzel still |
+| `logo.webp` | the wordmark, upscaled, background keyed out | nav + footer + 404 |
 
 **The hero is full-bleed at every width, and it crops the trailer.** That is
 deliberate and it was asked for. A stacked variant was built — words on navy
@@ -99,13 +103,15 @@ on 2026-11-09 in favour of the full-bleed look. If you
 ever want it back, it was a single `@media (max-width:1100px)` block; the
 git history has it.
 
-**The two food photos are now on the page**, as the two animated feature
-blocks in the menu. They came from the business's published gallery, but at
-560×560 and shot on a styled surface they look like supplied stock rather
-than their own plate. Both are labelled **"Serving suggestion"** on the page,
-which is honest either way, and both carry a `[CONFIRM]` marker. Swap them
-for real plate photography when the owner sends it — the markup does not
-need to change, only the two files.
+**The two food photos are on the page**, as the two feature blocks in the
+menu. They came from the business's published gallery at 560×560; they were
+upscaled to 2160×2160 and are served at 1280 and 640. Shot on a styled
+surface, they look like supplied stock rather than the truck's own plate, so
+both are labelled **"Serving suggestion"** on the page, which is honest
+either way, and both carry a `[CONFIRM]` marker. Swap them for real plate
+photography when the owner sends it. If you do, **delete the matching
+`.mp4` and its `<video>` tag too** — each clip was generated from its still
+and would no longer match.
 
 The Facebook cover photo is a good full-width cheesesteak shot and would make
 a strong second hero — it is behind a login wall, so ask the owner for the file.
@@ -227,10 +233,16 @@ The brief was "the best" animations, fast. What is here:
 - **Hero parallax** — the picture drifts down at 0.22× scroll, the words up
   at 0.07×, and the block fades out across the first three-quarters of a
   viewport.
-- **A slow push-in on the food**, 22 seconds end to end, with **steam**
-  rising off the plate — three or four blurred discs on their own durations
-  and delays, each drifting up and sideways as it fades. Both are pure CSS
-  on cached layers.
+- **Real motion in the food.** Each feature photo has a short seamless video
+  loop on top of it: cheese sauce running and steam lifting off the
+  cheesesteak, one faint wisp crossing the pretzels. The clip is fetched only
+  when it is within 250px of the viewport, fades in once it is actually
+  playing, and pauses when scrolled away.
+- Underneath, the still keeps **a slow push-in**, 22 seconds end to end, and
+  **drawn steam** above the plate — blurred discs on their own durations and
+  delays. That is the fallback: it is what shows before the clip arrives, on
+  Save-Data or a 2g connection, and whenever the clip fails. The drawn steam
+  fades out once the real clip is live.
 - **A gold rule that draws itself** under each dish name as the card arrives.
 - **Pointer tilt** on the menu cards — a 7° perspective rotation with a glow
   that tracks the cursor.
@@ -251,9 +263,27 @@ Rules the implementation sticks to:
 - **`prefers-reduced-motion` switches all of it off** — flames hidden, ribbon
   stopped, parallax disabled, every reveal shown in its final state.
 
-Total page weight is about 1.2 MB, most of it the hero image, which is the
-LCP element and loads with `fetchpriority="high"`. Everything below the fold
-is lazy. The only external requests are two Google Fonts.
+A first visit downloads roughly 300 KB: the document, the logo and the hero
+image, which is the LCP element and loads with `fetchpriority="high"`.
+Everything below the fold is lazy, including both clips, so the 2.0 MB total
+is only paid by someone who scrolls the whole page. The only external
+requests are two Google Fonts.
+
+### Two layout bugs worth knowing about, both fixed 2026-11-11
+
+- **`img{height:auto}` was missing.** Every `<img>` carries width/height
+  attributes, and those double as presentational hints: an image told
+  `width:100%` kept its attribute height in pixels, so `aspect-ratio` never
+  applied. It was quietly distorting the catering photo, the three gallery
+  photos, the menu board and the footer logo, and had been since day one.
+- **Phones could scroll sideways.** The gold glow behind each food photo
+  bled 14% past its box, which on a stacked phone layout is past the edge of
+  the screen. Sections now clip horizontally and the glow no longer bleeds
+  sideways when stacked.
+
+Both were found by a scratch harness that loads the page in headless Edge at
+1440 and 390, scrolls it like a visitor, and reports whether each clip really
+plays and whether every image box has the ratio it should.
 
 ---
 
@@ -263,6 +293,40 @@ is lazy. The only external requests are two Google Fonts.
 - No invented service areas. The only places named — Liberty Township,
   Fairfield, Cincinnati — come from the trailer, from booked events, or from
   the business's own listing.
-- No generated imagery. Every photograph is the business's own.
+- No generated subjects. Every photograph is one the business published.
+  Three assets were AI-processed from those photographs — see section 8 —
+  and the page footer says so in plain words.
 - No form pretends to send anything, because there is no form.
 - Anything unverified is marked `[CONFIRM]`.
+
+---
+
+## 8. What Higgsfield was used for
+
+Added 2026-11-11. 67.25 credits spent, 921.75 left on the Plus plan.
+
+**Shipped**
+
+| Asset | What was done | Cost |
+|---|---|---|
+| `food-steak.webp`, `food-pretzel.webp` | upscaled 560 → 2160px (Bytedance upscaler). Checked at pixel level: real detail, nothing invented. | 2 + 2 |
+| `logo.webp` | the 499×146 crop off the printed board upscaled to 7357px, then the blue plate keyed out. Letterforms unchanged, the old blue fringe and jagged edges gone. | 2 |
+| `food-steak.mp4` | Kling 3.0 Pro, image-to-video from the upscaled still. 5.8 MB as delivered; crossfaded into a 4 s seamless loop and re-encoded to 274 KB. | 8.75 |
+| `food-pretzel.mp4` | same route, 4.5 s loop, 271 KB. Third attempt — see below. | 8.75 |
+
+**Generated and thrown away**, so nobody repeats it:
+
+- **Three clips with the start and end frame pinned to the same photo**
+  (26.25 credits). Meant to guarantee a seamless loop; what it guarantees is
+  a still. Measured frame by frame: under 0.1% of the picture moved. Release
+  the end frame and build the loop afterwards with a crossfade instead.
+- **A pretzel clip with heavy steam** (8.75). Shot from overhead, steam
+  rising toward the lens reads as patches of fog. The kept version asks for
+  "a few very faint, thin wisps".
+- **A hero clip of the trailer** (8.75). The lettering survived intact, which
+  was the worry. But the hero's dark overlay hides the sky and the roof vent,
+  so the only motion left visible was a slow camera drift — not worth a
+  megabyte and a softer picture than the sharp still. The hero stays a still.
+
+The loops were cut and compressed with ffmpeg in Higgsfield's cloud sandbox,
+because this machine has no ffmpeg. Nothing was installed locally.

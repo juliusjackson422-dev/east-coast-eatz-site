@@ -44,7 +44,12 @@
   Schedule         streetfoodfinder.com/EastCoastEatz, read 2026-11-05
   Socials          the printed menu board
   Photography      the business's own photographs, from their
-                   StreetFoodFinder gallery. Nothing here is generated.
+                   StreetFoodFinder gallery. No subject on this page was
+                   generated. Three things were AI-processed, all from
+                   those photographs: the two food stills were upscaled,
+                   the logo was upscaled before its background was keyed
+                   out, and the two menu clips are the food stills set in
+                   motion. The footer says so.
 
   WHAT IS NOT VERIFIED — search this file for [CONFIRM]
   -----------------------------------------------------
@@ -121,7 +126,12 @@ body{
   -webkit-font-smoothing:antialiased;
   -webkit-tap-highlight-color:rgba(255,192,46,.18);
 }
-img{max-width:100%;display:block}
+/* height:auto is not optional. Every <img> here carries width/height
+   attributes so the browser can reserve its box, and those attributes are
+   also presentational hints: without this line an image told "width:100%"
+   keeps its attribute height in pixels, so aspect-ratio never applies and
+   the picture is stretched or mis-cropped. */
+img{max-width:100%;height:auto;display:block}
 a{color:inherit}
 /* no 300ms double-tap wait on the call buttons and nav links. */
 a,button{touch-action:manipulation}
@@ -388,6 +398,8 @@ p:last-child{margin-bottom:0}
 /* ===================== SECTIONS ===================== */
 section{position:relative}
 .sec{padding:clamp(4.6rem,11vh,8.4rem) 0}
+/* decorative glows may bleed past a section, but never widen the page */
+.sec{overflow-x:clip}
 .sec--alt{background:linear-gradient(180deg,var(--navy-900),var(--navy-850) 40%,var(--navy-900))}
 .sec__head{max-width:70ch;margin-bottom:clamp(2.4rem,5vw,3.8rem)}
 
@@ -432,6 +444,22 @@ section{position:relative}
   from{transform:scale(1.03) translate3d(0,0,0)}
   to  {transform:scale(1.13) translate3d(-2%,1.5%,0)}
 }
+/* ---- motion loops ----
+   A short real-motion clip sits on top of the still and fades in only once
+   it is actually playing. The still stays underneath as the poster, the
+   fallback, and the whole experience under reduced motion or Save-Data.
+   The clip rides the same push-in as the still, so the swap is invisible. */
+.kb{position:relative}
+.kb video,.hero__media video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 1.2s var(--ease-soft);pointer-events:none;
+}
+.kb video{animation:kenburns 22s ease-in-out infinite alternate;will-change:transform,opacity}
+.hero__media video{object-position:52% 46%}
+.is-live > .kb video,.hero__media.is-live video{opacity:1}
+/* real steam is in the clip now; the drawn steam above it bows out */
+.feature__media .steam{transition:opacity .9s var(--ease-soft)}
+.feature__media.is-live .steam{opacity:0}
 /* a warm rim so the plate sits in the navy instead of floating on it */
 .feature__media::after{
   content:"";position:absolute;inset:-14%;z-index:-1;border-radius:50%;
@@ -629,6 +657,9 @@ section{position:relative}
   .feature--flip .feature__media{order:0}
   .kb img{aspect-ratio:16/10}
   .steam{top:-44px;height:76px}
+  /* stacked, the photo is as wide as the column, so a glow that bleeds 14%
+     sideways runs off the screen and gives phones a sideways scroll */
+  .feature__media::after{inset:-10% 0}
 }
 @media (max-width:980px){
   .story,.cater,.board{grid-template-columns:1fr}
@@ -667,7 +698,7 @@ section{position:relative}
   .mask > span{transform:none}
   .wipe img{transform:none}
   .wipe::after{transform:scaleX(0)}
-  .flames,.steam{display:none}
+  .flames,.steam,.kb video,.hero__media video{display:none}
   .kb img{animation:none;transform:none}
   .dish__name::after{transform:scaleX(1)}
   .ribbon__track{animation:none}
@@ -683,7 +714,7 @@ section{position:relative}
 
 <nav class="nav" id="nav">
   <a class="nav__logo" href="#top" aria-label="East Coast Eatz — home">
-    <img src="img/logo.webp" width="374" height="110" alt="East Coast Eatz">
+    <img src="img/logo.webp" width="380" height="106" alt="East Coast Eatz">
   </a>
   <ul class="nav__links">
     <li><a href="#menu">Menu</a></li>
@@ -831,8 +862,13 @@ section{position:relative}
     <div class="feature rv">
       <div class="feature__media">
         <figure class="kb">
-          <img src="img/food-steak.webp" width="560" height="560" loading="lazy" decoding="async"
+          <img src="img/food-steak.webp" srcset="img/food-steak-sm.webp 640w, img/food-steak.webp 1280w"
+               sizes="(max-width:860px) 92vw, 520px" width="1280" height="1280" loading="lazy" decoding="async"
                alt="A cheesesteak on a roll under cheese sauce and grilled onions.">
+          <!-- 4-second seamless loop made from the still above: cheese
+               running, steam lifting. 274 KB, fetched only when on screen. -->
+          <video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
+                 data-src="img/food-steak.mp4"></video>
         </figure>
         <span class="steam" aria-hidden="true">
           <i style="--sd:5.2s;--sdl:0s;   --sx:14px; left:8%"></i>
@@ -931,8 +967,13 @@ section{position:relative}
     <div class="feature feature--flip rv">
       <div class="feature__media">
         <figure class="kb">
-          <img src="img/food-pretzel.webp" width="560" height="560" loading="lazy" decoding="async"
+          <img src="img/food-pretzel.webp" srcset="img/food-pretzel-sm.webp 640w, img/food-pretzel.webp 1280w"
+               sizes="(max-width:860px) 92vw, 520px" width="1280" height="1280" loading="lazy" decoding="async"
                alt="Salted pretzel bites piled on paper, with dips alongside.">
+          <!-- 4.5-second seamless loop made from the still above: one faint
+               wisp of steam crossing the pile. 271 KB, fetched only on screen. -->
+          <video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
+                 data-src="img/food-pretzel.mp4"></video>
         </figure>
         <span class="steam" aria-hidden="true">
           <i style="--sd:5.8s;--sdl:.4s;  --sx:-12px;left:14%"></i>
@@ -1113,7 +1154,7 @@ section{position:relative}
   <div class="wrap">
     <div class="foot__grid">
       <div class="foot__brand">
-        <div class="foot__logo"><img src="img/logo.webp" width="374" height="110" loading="lazy" alt="East Coast Eatz"></div>
+        <div class="foot__logo"><img src="img/logo.webp" width="380" height="106" loading="lazy" alt="East Coast Eatz"></div>
         <p class="dim" style="max-width:36ch">Philly cheesesteaks out of a blue-flame trailer. Liberty Township, Ohio &mdash; and wherever the schedule says.</p>
         <div class="socials">
           <a href="https://www.facebook.com/EastCoastEatz/" rel="noopener" aria-label="East Coast Eatz on Facebook">
@@ -1150,7 +1191,7 @@ section{position:relative}
 
     <div class="foot__base">
       <p>&copy; <span id="yr">2026</span> East Coast Eatz, LLC &middot; Est. 2013</p>
-      <p>Photographs come from the business&rsquo;s own published galleries. Nothing here is AI-generated.</p>
+      <p>Photographs come from the business&rsquo;s own published galleries. The two menu clips are those photographs, sharpened and set in motion with AI.</p>
     </div>
   </div>
 </footer>
@@ -1340,6 +1381,45 @@ section{position:relative}
     if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
     target.focus({ preventScroll: true });
   });
+
+  /* ---------- motion loops: fetched late, played only while on screen ----------
+     Nothing is requested until a clip is within 250px of the viewport, so the
+     page's first load is unchanged. Skipped entirely under reduced motion,
+     Save-Data, or a 2g connection; a clip with data-min only loads on
+     viewports at least that wide. */
+  var conn = navigator.connection || {};
+  var lite = reduce.matches || conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType || '');
+  var loops = document.querySelectorAll('video[data-src]');
+
+  function goLive() {
+    var host = this.parentNode;
+    while (host && !(host.classList && (host.classList.contains('feature__media') || host.classList.contains('hero__media')))) {
+      host = host.parentNode;
+    }
+    if (host) host.classList.add('is-live');
+  }
+
+  if (!lite && loops.length && 'IntersectionObserver' in window) {
+    var vio = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        var v = entries[i].target;
+        if (entries[i].isIntersecting) {
+          if (!v.getAttribute('src')) v.setAttribute('src', v.getAttribute('data-src'));
+          var p = v.play();
+          if (p && p.catch) p.catch(function () {});
+        } else if (!v.paused) {
+          v.pause();
+        }
+      }
+    }, { rootMargin: '250px 0px', threshold: 0.01 });
+
+    for (var l = 0; l < loops.length; l++) {
+      var min = parseInt(loops[l].getAttribute('data-min') || '0', 10);
+      if (window.innerWidth < min) continue;
+      loops[l].addEventListener('playing', goLive);
+      vio.observe(loops[l]);
+    }
+  }
 
   document.getElementById('yr').textContent = new Date().getFullYear();
 })();
